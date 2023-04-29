@@ -1,0 +1,41 @@
+-- Project Phase I
+-- 1)Who is the senior most employee based on job title?
+select * from invoice;
+SELECT title,last_name,first_name from employee
+where hire_date<(select max(hire_date) from employee)
+ORDER BY title desc ,hire_date asc
+LIMIT 1;
+-- 2)Which countries have the most Invoices?
+select * from invoice;
+SELECT billing_country,count(*) as most_Invoices FROM invoice
+GROUP BY billing_country
+ORDER BY most_Invoices DESC
+LIMIT 10;
+
+-- 3. What are top 3 values of total invoice? 
+SELECT round(total,2) as top3 from invoice
+ORDER BY total DESC
+LIMIT 3;
+-- 4. Which city has the best customers? We would like to throw a promotional 
+-- Music Festival in the city we made the most money. 
+-- Write a query that returns one city that has the highest sum of invoice totals. 
+-- Return both the city name & sum of all invoice totals
+SELECT * FROM customer;
+
+SELECT billing_city,ROUND(SUM(total),2) AS Sum from invoice
+GROUP BY billing_city
+ORDER BY Sum desc
+LIMIT 10;
+
+-- 5. Who is the best customer? The customer 
+-- who has spent the most money will be declared the best customer. 
+-- Write a query that returns the person who has spent the most money
+ 
+select * from customer;
+select * from invoice;
+SELECT c.customer_id,c.first_name,c.last_name,round(SUM(i.total),2) as total_spent 
+FROM customer c
+JOIN invoice i ON i.customer_id=c.customer_id
+GROUP BY c.customer_id,c.first_name,c.last_name
+ORDER BY total_spent DESC
+LIMIT 100;
